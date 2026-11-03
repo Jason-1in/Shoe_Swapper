@@ -1,0 +1,37 @@
+{% extends 'shoes/base.html' %}
+
+{% block page_header %}
+<h2>My shoes</h2>
+{% endblock page_header %}
+
+{% block content %}
+<p><a class="btn btn-primary" href="{% url 'shoes:new_shoe' %}">Add a shoe</a></p>
+
+{% for shoe in shoes %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ shoe.brand_name }} {{ shoe.model_name }}</h5>
+        <p class="card-text mb-1">
+            Size US {{ shoe.size_us }} ·
+            {{ shoe.get_condition_display }} ·
+            {{ shoe.km_run }} km
+            {% if shoe.asking_price is not None %}
+                Asking Price ${{ shoe.asking_price|floatformat:2 }}
+            {% else %}
+                Swap only
+            {% endif %}
+        </p>
+        <p class="card-text text-muted mb-2">
+            {% if shoe.is_available %}
+            Available to swap
+            {% else %}
+            Not available
+            {% endif %}
+        </p>
+        <a href="{% url 'shoes:edit_shoe' shoe.id %}">Edit</a>
+    </div>
+</div>
+{% empty %}
+<p>You haven't added any shoes yet.</p>
+{% endfor %}
+{% endblock content %}
