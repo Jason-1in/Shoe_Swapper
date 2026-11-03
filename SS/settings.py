@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     #customs apps 
     'shoes',
     'django_bootstrap5',
+    'accounts',
 
     #Django default apps
 
@@ -122,7 +123,11 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+#Login and logout behaviour
 
+LOGIN_URL = 'accounts:login'
+LOGIN_REDIRECT_URL = "shoes:index"
+LOGOUT_REDIRECT_URL = "shoes:index"
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
