@@ -1,0 +1,20 @@
+{% extends 'shoes/base.html' %}
+{% load django_bootstrap5 %}
+
+{% block page_header %}
+<h2>Request a swap</h2>
+{% endblock page_header %}
+
+{% block content %}
+<p>
+    For <a href="{% url 'shoes:shoe_detail' shoe.id %}">{{ shoe.brand_name }} {{ shoe.model_name }}</a>
+    (US {{ shoe.size_us }}), listed by {{ shoe.owner.username }}.
+</p>
+
+<form method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% bootstrap_button button_type="submit" content="Send request" %}
+    <a href="{% url 'shoes:shoe_detail' shoe.id %}" class="btn btn-outline-secondary">Cancel</a>
+</form>
+{% endblock content %}

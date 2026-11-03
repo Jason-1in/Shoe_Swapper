@@ -87,6 +87,8 @@ class SwapRequest(models.Model):
     shoe = models.ForeignKey(Shoe, on_delete=models.CASCADE, related_name='swap_requests')
     requester = models.ForeignKey(User, on_delete=models.CASCADE, related_name='swap_requests')
     message = models.TextField(blank=True)
+    contact_details = models.CharField("Contact details", max_length=200, blank=True)
+    owner_contact_details = models.CharField("Owner's contact details", max_length=200, blank=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     date_added = models.DateTimeField(auto_now_add=True)
 

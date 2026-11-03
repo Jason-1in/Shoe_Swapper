@@ -1,0 +1,30 @@
+{% extends 'shoes/base.html' %}
+{% load django_bootstrap5 %}
+
+{% block page_header %}
+<h2>Respond to request</h2>
+{% endblock page_header %}
+
+{% block content %}
+<p>
+    <strong>{{ swap.requester.username }}</strong> would like your
+    {{ swap.shoe.brand_name }} {{ swap.shoe.model_name }}.
+</p>
+{% if swap.message %}
+    <blockquote class="border-start ps-3">{{ swap.message|linebreaksbr }}</blockquote>
+{% endif %}
+{% if swap.contact_details %}
+    <p>Their contact: {{ swap.contact_details }}</p>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button type="submit" name="action" value="accept" class="btn btn-success">Accept</button>
+    <button type="submit" name="action" value="decline" class="btn btn-outline-danger">Decline</button>
+    <a href="{% url 'shoes:incoming_requests' %}" class="btn btn-outline-secondary">Back</a>
+</form>
+<p class="text-muted mt-3">
+    Accepting takes the shoe off the browse page and declines any other pending requests for it.
+</p>
+{% endblock content %}

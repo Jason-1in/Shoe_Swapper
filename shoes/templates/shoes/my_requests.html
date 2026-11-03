@@ -1,0 +1,29 @@
+{% extends 'shoes/base.html' %}
+
+{% block page_header %}
+<h2>My requests</h2>
+{% endblock page_header %}
+
+{% block content %}
+{% for swap in swaps %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">
+            {{ swap.shoe.brand_name }} {{ swap.shoe.model_name }}
+            <span class="badge bg-secondary">{{ swap.get_status_display }}</span>
+        </h5>
+        <p class="mb-1">Listed by <strong>{{ swap.shoe.owner.username }}</strong></p>
+        {% if swap.status == 'accepted' %}
+            {% if swap.owner_contact_details %}
+                <p class="mb-0">Contact them: <strong>{{ swap.owner_contact_details }}</strong></p>
+            {% else %}
+                <p class="text-muted mb-0">Accepted. They didn't share contact details, so try reaching them at run club.</p>
+                {# can change this later #}
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% empty %}
+<p>You haven't requested any swaps yet. <a href="{% url 'shoes:browse' %}">Browse shoes</a>.</p>
+{% endfor %}
+{% endblock content %}

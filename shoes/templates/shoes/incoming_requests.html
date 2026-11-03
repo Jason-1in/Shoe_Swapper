@@ -1,0 +1,34 @@
+{% extends 'shoes/base.html' %}
+
+{% block page_header %}
+<h2>Requests received</h2>
+{% endblock page_header %}
+
+{% block content %}
+{% for swap in swaps %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">
+            {{ swap.shoe.brand_name }} {{ swap.shoe.model_name }}
+            <span class="badge bg-secondary">{{ swap.get_status_display }}</span>
+        </h5>
+        <p class="mb-1">From <strong>{{ swap.requester.username }}</strong></p>
+        {% if swap.message %}
+            <p class="mb-1">{{ swap.message|linebreaksbr }}</p>
+        {% endif %}
+        {% if swap.contact_details %}
+            <p class="mb-1">Their contact: {{ swap.contact_details }}</p>
+        {% endif %}
+        {% if swap.status == 'accepted' and swap.owner_contact_details %}
+            <p class="text-muted mb-1">You shared: {{ swap.owner_contact_details }}</p>
+        {% endif %}
+        {% if swap.status == 'pending' %}
+            <a class="btn btn-primary btn-sm"
+               href="{% url 'shoes:respond_request' swap.id %}">Respond</a>
+        {% endif %}
+    </div>
+</div>
+{% empty %}
+<p>No one has requested your shoes yet.</p>
+{% endfor %}
+{% endblock content %}

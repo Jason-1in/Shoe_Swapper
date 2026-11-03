@@ -36,9 +36,9 @@
 {% if is_owner %}
     <a class="btn btn-outline-secondary" href="{% url 'shoes:edit_shoe' shoe.id %}">Edit this shoe</a>
 {% else %}
-    {# Thursday: the "Request swap" button goes here #}
-    <p class="text-muted">Swap requests are coming soon.</p>
+    <a class="btn btn-primary" href="{% url 'shoes:request_swap' shoe.id %}">Request swap</a>
 {% endif %}
+
 
 <p class="mt-3"><a href="{% url 'shoes:browse' %}">&larr; Back to browse</a></p>
 {% endblock content %}

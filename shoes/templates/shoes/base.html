@@ -27,7 +27,8 @@
                     {# placeholders for pages #}
                     <li class="nav-item"><a class="nav-link" href="{% url 'shoes:browse' %}">Browse shoes</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'shoes:my_shoes' %}">My shoes</a></li>
-                    {# <li class="nav-item"><a class="nav-link" href="{% url 'shoes:requests' %}">Swap requests</a></li> #}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'shoes:my_requests' %}">My requests</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'shoes:incoming_requests' %}">Requests Received</a></li>
                     </a>
                 </li>
             </ul><!--End of links on left side of navbar-->
@@ -65,8 +66,14 @@
 
 
     <main class= "container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} mt-2">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
         <div class ="pb-2 mb-2 border-bottom">
-        {% block page_header %}{% endblock page_header %}
+        {% block page_header %}
+        {% endblock page_header %}
     </div>
     <div>
         {% block content %}{% endblock content %}

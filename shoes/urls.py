@@ -12,5 +12,9 @@ urlpatterns = [
     path('edit_shoe/<int:shoe_id>/', views.edit_shoe, name='edit_shoe'),
     path('browse/', views.browse, name='browse'),
     path('shoe/<int:shoe_id>/', views.shoe_detail, name='shoe_detail'),
+    path('shoe/<int:shoe_id>/request/', views.request_swap, name='request_swap'),
+    path('requests/incoming/', views.incoming_requests, name='incoming_requests'),
+    path('requests/mine/', views.my_requests, name='my_requests'),
+    path('requests/<int:request_id>/respond/', views.respond_request, name='respond_request'),
 
 ]
