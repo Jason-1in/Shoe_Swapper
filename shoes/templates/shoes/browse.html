@@ -1,0 +1,34 @@
+{% extends 'shoes/base.html' %}
+
+{% block page_header %}
+<h2>Browse shoes</h2>
+{% endblock page_header %}
+
+{% block content %}
+{% for shoe in shoes %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">
+            <a href="{% url 'shoes:shoe_detail' shoe.id %}">
+                {{ shoe.brand_name }} {{ shoe.model_name }}
+            </a>
+        </h5>
+        <p class="card-text mb-1">
+            Size US {{ shoe.size_us }} ·
+            {{ shoe.get_condition_display }} ·
+            {{ shoe.km_run }} km
+        </p>
+        <p class="card-text mb-1">
+            {% if shoe.asking_price is not None %}
+                Asking Price${{ shoe.asking_price|floatformat:2 }}
+            {% else %}
+                Swap only
+            {% endif %}
+        </p>
+        <p class="card-text text-muted mb-0">Listed by {{ shoe.owner.username }}</p>
+    </div>
+</div>
+{% empty %}
+<p>No shoes are available right now. Check back soon, or <a href="{% url 'shoes:new_shoe' %}">add one of your own</a>.</p>
+{% endfor %}
+{% endblock content %}

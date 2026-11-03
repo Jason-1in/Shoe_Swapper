@@ -10,7 +10,10 @@
 {% for shoe in shoes %}
 <div class="card mb-3">
     <div class="card-body">
-        <h5 class="card-title">{{ shoe.brand_name }} {{ shoe.model_name }}</h5>
+        <h5 class="card-title">
+            <a href="{% url 'shoes:shoe_detail' shoe.id %}"></a>
+            {{ shoe.brand_name }} {{ shoe.model_name }}
+        </h5>
         <p class="card-text mb-1">
             Size US {{ shoe.size_us }} ·
             {{ shoe.get_condition_display }} ·

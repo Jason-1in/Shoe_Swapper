@@ -1,0 +1,44 @@
+{% extends 'shoes/base.html' %}
+
+{% block page_header %}
+<h2>{{ shoe.brand_name }} {{ shoe.model_name }}</h2>
+{% endblock page_header %}
+
+{% block content %}
+<dl class="row">
+    <dt class="col-sm-3">Size</dt>
+    <dd class="col-sm-9">US {{ shoe.size_us }}</dd>
+
+    <dt class="col-sm-3">Condition</dt>
+    <dd class="col-sm-9">{{ shoe.get_condition_display }}</dd>
+
+    <dt class="col-sm-3">Distance run</dt>
+    <dd class="col-sm-9">{{ shoe.km_run }} km</dd>
+
+    <dt class="col-sm-3">Price</dt>
+    <dd class="col-sm-9">
+        {% if shoe.asking_price is not None %}
+            ${{ shoe.asking_price|floatformat:2 }}
+        {% else %}
+            Swap only
+        {% endif %}
+    </dd>
+
+    <dt class="col-sm-3">Listed by</dt>
+    <dd class="col-sm-9">{{ shoe.owner.username }}</dd>
+
+    {% if shoe.notes %}
+    <dt class="col-sm-3">Notes</dt>
+    <dd class="col-sm-9">{{ shoe.notes|linebreaksbr }}</dd>
+    {% endif %}
+</dl>
+
+{% if is_owner %}
+    <a class="btn btn-outline-secondary" href="{% url 'shoes:edit_shoe' shoe.id %}">Edit this shoe</a>
+{% else %}
+    {# Thursday: the "Request swap" button goes here #}
+    <p class="text-muted">Swap requests are coming soon.</p>
+{% endif %}
+
+<p class="mt-3"><a href="{% url 'shoes:browse' %}">&larr; Back to browse</a></p>
+{% endblock content %}

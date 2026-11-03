@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-
+from django.http import Http404
 from .models import Shoe
 from .forms import ShoeForm
 
@@ -51,3 +51,24 @@ def edit_shoe(request, shoe_id):
 
     context = {'form': form, 'heading': 'Edit shoe'}
     return render(request, 'shoes/shoe_form.html', context)
+
+#Now for the browsing page 
+
+@login_required
+def browse(request):
+    """Show available shoes from other users"""
+    shoes = (Shoe.objects.filter(is_available=True).exclude(owner=request.user).order_by('date_added'))
+    context = {'shoes':shoes}
+    return render (request, 'shoes/browse.html',context)
+
+@login_required
+def shoe_detail(request, shoe_id):
+    """Show one shoe."""
+    shoe = get_object_or_404(Shoe, id=shoe_id)
+
+    # Unavailable shoes are only visible to their owner.
+    if not shoe.is_available and shoe.owner != request.user:
+        raise Http404
+
+    context = {'shoe': shoe, 'is_owner': shoe.owner == request.user}
+    return render(request, 'shoes/shoe_detail.html', context)
