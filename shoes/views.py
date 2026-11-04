@@ -161,3 +161,16 @@ def respond_request(request, request_id):
 
     context = {'form': form, 'swap': swap}
     return render(request, 'shoes/respond_request.html', context)
+
+
+@login_required
+def delete_shoe(request, shoe_id):
+    """Confirm and delete one of your own shoes."""
+    shoe = get_object_or_404(Shoe, id=shoe_id, owner=request.user)
+
+    if request.method == 'POST':
+        shoe.delete()
+        messages.success(request, 'Shoe deleted.')
+        return redirect('shoes:my_shoes')
+
+    return render(request, 'shoes/delete_shoe.html', {'shoe': shoe})

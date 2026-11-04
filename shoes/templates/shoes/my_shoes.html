@@ -32,6 +32,7 @@
             {% endif %}
         </p>
         <a href="{% url 'shoes:edit_shoe' shoe.id %}">Edit</a>
+        <a href="{% url 'shoes:delete_shoe' shoe.id %}" class="text-danger">Delete</a>
     </div>
 </div>
 {% empty %}

@@ -1,0 +1,18 @@
+{% extends 'shoes/base.html' %}
+
+{% block page_header %}
+<h2>Delete shoe</h2>
+{% endblock page_header %}
+
+{% block content %}
+<p>
+    Delete <strong>{{ shoe.brand_name }} {{ shoe.model_name }}</strong>?
+    This also removes any swap requests on it and can't be undone.
+</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+    <a href="{% url 'shoes:my_shoes' %}" class="btn btn-outline-secondary">Cancel</a>
+</form>
+{% endblock content %}

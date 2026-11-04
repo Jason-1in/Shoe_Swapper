@@ -16,5 +16,5 @@ urlpatterns = [
     path('requests/incoming/', views.incoming_requests, name='incoming_requests'),
     path('requests/mine/', views.my_requests, name='my_requests'),
     path('requests/<int:request_id>/respond/', views.respond_request, name='respond_request'),
-
+    path('delete_shoe/<int:shoe_id>/', views.delete_shoe, name='delete_shoe')
 ]
