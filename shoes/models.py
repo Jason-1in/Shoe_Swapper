@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from django.core.exceptions import ValidationError
 
 
@@ -47,6 +47,10 @@ class Shoe(models.Model):
     )
     condition = models.CharField(max_length=10, choices=CONDITION_CHOICES, default='good')
     km_run = models.PositiveIntegerField(default=0)
+    suburb = models.CharField(max_length=100, help_text="Suburb for pick up, don't include your actual address!")
+    postcode = models.CharField(
+        max_length =4, validators =[RegexValidator(r'^\d{4}$')] #ensure the postcode is 4 numerical characters
+    )
     asking_price = models.DecimalField(
         "Asking price ($)",
         max_digits = 6,
@@ -94,3 +98,15 @@ class SwapRequest(models.Model):
 
     def __str__(self):
         return f'{self.requester} -> {self.shoe} ({self.status})'
+
+class Postcode(models.Model):
+    """One row per Australian postcode with central point for distance calculation"""
+    code = models.CharField(max_length=4, unique = True)
+    state = models.CharField(max_length=3, blank =True)
+    latitude=models.FloatField() 
+    longitude=models.FloatField() 
+    suburbs = models.CharField(max_length =200,blank = True)
+
+
+    def __str__(self):
+        return f'{self.code} {self.suburbs}'
