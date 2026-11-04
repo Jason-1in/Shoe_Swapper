@@ -60,6 +60,7 @@ class Shoe(models.Model):
         validators =[MinValueValidator(0)],
         help_text = "Leave blank for swap only",
     )
+    photo = models.ImageField(upload_to='shoes/',blank =True)
     notes = models.TextField(blank=True)
     is_available = models.BooleanField(default=True)
     date_added = models.DateTimeField(auto_now_add=True)

@@ -6,7 +6,19 @@ from django.core.validators import RegexValidator
 class ShoeForm(forms.ModelForm):
     class Meta: 
         model = Shoe
-        fields = ['brand', 'brand_other','model_name', 'size_us', 'condition', 'km_run','postcode','suburb','asking_price','notes','is_available' ]
+        fields = ['brand', 
+                  'brand_other',
+                  'model_name', 
+                  'size_us', 
+                  'condition', 
+                  'km_run',
+                  'postcode',
+                  'suburb',
+                  'asking_price',
+                  'photo',
+                  'notes',
+                  'is_available' 
+                  ]
         labels = {
             'model_name':'Model',
             'km_run':'Distance run(km)',
@@ -14,8 +26,10 @@ class ShoeForm(forms.ModelForm):
             'asking_price':'Asking price ($)',
             'postcode': 'Postcode',
             'suburb': 'Suburb',
+            'photo': 'Photo',
         }
-    widgets = {'notes':forms.Textarea(attrs={'rows':3})}
+    widgets = {'notes':forms.Textarea(attrs={'rows':3}),
+               'photo': forms.ClearableFileInput(attrs={'accept': 'image/*'})}
 
 
     def clean_postcode(self):
@@ -24,6 +38,18 @@ class ShoeForm(forms.ModelForm):
             raise ValidationError("We don't recognise that postcode")
         return code
 
+    def clean_photo(self):
+        photo = self.cleaned_data.get('photo')
+        if photo:
+            if photo.size > 5*1024*1024:
+                raise ValidationError("image must be smaller than 5 MB.")
+            if photo.content_type not in [
+                'image/jped',
+                'image/png',
+                'image/webp'
+            ]:
+                raise ValidationError ("Please upload a JPEG, PNG or WebP image.")
+        return photo 
 class SwapRequestForm(forms.ModelForm):
     class Meta: 
         model = SwapRequest

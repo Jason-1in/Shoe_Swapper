@@ -26,7 +26,10 @@ def new_shoe(request):
     if request.method != 'POST':
         form = ShoeForm()
     else:
-        form = ShoeForm(data=request.POST)
+        form = ShoeForm(
+            data=request.POST,
+            files=request.FILES
+            )
         if form.is_valid():
             shoe = form.save(commit=False)
             shoe.owner = request.user
@@ -46,7 +49,9 @@ def edit_shoe(request, shoe_id):
     if request.method != 'POST':
         form = ShoeForm(instance=shoe)
     else:
-        form = ShoeForm(instance=shoe, data=request.POST)
+        form = ShoeForm(instance=shoe, 
+                        data=request.POST,
+                        files=request.FILES)
         if form.is_valid():
             form.save()
             return redirect('shoes:my_shoes')

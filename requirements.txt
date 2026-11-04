@@ -1,0 +1,9 @@
+asgiref==3.13.0
+Django==6.1.2
+django-bootstrap5==26.4
+numpy==2.5.4
+pandas==3.1.0
+pillow==13.0.0
+python-dateutil==4.0.0
+sqlparse==0.6.1
+tzdata==2026.6

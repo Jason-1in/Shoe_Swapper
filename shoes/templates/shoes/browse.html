@@ -37,12 +37,23 @@
                 {{ shoe.brand_name }} {{ shoe.model_name }}
             </a>
         </h5>
+         <div class="shoe-image-container mb-3">
+            {% if shoe.photo %}
+                <img src="{{ shoe.photo.url }}"
+                alt="{{ shoe.brand_name }} {{ shoe.model_name }}"
+                width="200">
+            {% else %}
+                <div class ="no-image">
+                    <span>No photo uploaded</span>
+                </div>
+            {% endif %}
+        </p>
         <p class="card-text mb-1">
             Size US {{ shoe.size_us }} ·
             {{ shoe.get_condition_display }} ·
             Mileage: {{ shoe.km_run }} km
         </p>
-        <p class="card-text mb-1", style="color: rgb(0, 162, 255);"">
+        <p class="card-text mb-1", style="color: rgb(0, 162, 255);">
             Suburb: {{shoe.suburb}} · 
             Postcode: {{shoe.postcode}}
         </p>
@@ -53,6 +64,7 @@
                 Swap only
             {% endif %}
         </p>
+       
         <p class="card-text text-muted mb-0">Listed by {{ shoe.owner.username }}</p>
     </div>
 </div>

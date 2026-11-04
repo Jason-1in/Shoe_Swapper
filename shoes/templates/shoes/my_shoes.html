@@ -15,6 +15,11 @@
             {{ shoe.brand_name }} {{ shoe.model_name }}
         </h5>
         <p class="card-text mb-1">
+            {% if shoe.photo %}
+                <img src="{{ shoe.photo.url }}"
+                alt="{{ shoe.brand_name }} {{ shoe.model_name }}"
+                width="200">
+            {% else %}
             Size US {{ shoe.size_us }} ·
             {{ shoe.get_condition_display }} ·
             {{ shoe.km_run }} km
