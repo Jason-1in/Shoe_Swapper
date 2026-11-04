@@ -1,10 +1,34 @@
 {% extends 'shoes/base.html' %}
+{% load django_bootstrap5 %}
 
 {% block page_header %}
 <h2>Browse shoes</h2>
 {% endblock page_header %}
 
 {% block content %}
+<!-- optional filter-->
+
+<form method="get" class="card card-body mb-4">
+    {% if form.non_field_errors %}
+        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+    {% endif %}
+    <div class="row g-2">
+        <div class="col-md-4">{% bootstrap_field form.brand %}</div>
+        <div class="col-md-4">{% bootstrap_field form.model_name %}</div>
+        <div class="col-md-2">{% bootstrap_field form.size_min %}</div>
+        <div class="col-md-2">{% bootstrap_field form.size_max %}</div>
+        <div class="col-md-4">{% bootstrap_field form.postcode %}</div>
+        <div class="col-md-4">{% bootstrap_field form.radius %}</div>
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a href="{% url 'shoes:browse' %}" class="btn btn-outline-secondary">Clear</a>
+    </div>
+</form>
+
+<p class="text-muted">{{ shoes|length }} shoe{{ shoes|length|pluralize }} found</p>
+
+<!--results-->
 {% for shoe in shoes %}
 <div class="card mb-3">
     <div class="card-body">
@@ -16,7 +40,7 @@
         <p class="card-text mb-1">
             Size US {{ shoe.size_us }} ·
             {{ shoe.get_condition_display }} ·
-            {{ shoe.km_run }} km
+            Mileage: {{ shoe.km_run }} km
         </p>
         <p class="card-text mb-1", style="color: rgb(0, 162, 255);"">
             Suburb: {{shoe.suburb}} · 
@@ -33,6 +57,6 @@
     </div>
 </div>
 {% empty %}
-<p>No shoes are available right now. Check back soon, or <a href="{% url 'shoes:new_shoe' %}">add one of your own</a>.</p>
+<p>No shoes are available right now. Try widening your filters or check back later, or <a href="{% url 'shoes:new_shoe' %}">add one of your own</a>.</p>
 {% endfor %}
 {% endblock content %}

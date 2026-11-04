@@ -1,6 +1,7 @@
 from django import forms 
-
 from .models import Shoe, SwapRequest, Postcode
+from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
 
 class ShoeForm(forms.ModelForm):
     class Meta: 
@@ -44,3 +45,38 @@ class RespondForm(forms.ModelForm):
         help_texts = {
             'owner_contact_details': 'Only shared with the requester if you accept.',
         }
+
+class BrowseFilterForm(forms.Form):
+    brand = forms.ChoiceField(required=False)
+    model_name = forms.CharField(label='Shoe model', required=False, max_length=100)
+    size_min = forms.DecimalField(
+        label='Size from (US)', required=False, min_value=3, max_value=18,
+        decimal_places=1, widget=forms.NumberInput(attrs={'step': '0.5'}),
+    )
+    size_max = forms.DecimalField(
+        label='Size to (US)', required=False, min_value=3, max_value=18,
+        decimal_places=1, widget=forms.NumberInput(attrs={'step': '0.5'}),
+    )
+    postcode = forms.CharField(
+        label='Your postcode', required=False, max_length=4,
+        validators=[RegexValidator(r'^\d{4}$', 'Enter a 4-digit postcode.')],
+    )
+    radius = forms.ChoiceField(
+        label='Distance', required=False,
+        choices=[('', 'Any distance'), ('10', 'Within 10 km'),
+                 ('25', 'Within 25 km'), ('50', 'Within 50 km')],
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        brand_choices = Shoe._meta.get_field('brand').choices
+        self.fields['brand'].choices = [('', 'Any brand')] + list(brand_choices)
+
+    def clean(self):
+        cleaned = super().clean()
+        low, high = cleaned.get('size_min'), cleaned.get('size_max')
+        if low is not None and high is not None and low > high:
+            raise ValidationError('"Size from" can\'t be bigger than "Size to".')
+        if cleaned.get('radius') and not cleaned.get('postcode'):
+            self.add_error('postcode', 'Enter your postcode to filter by distance.')
+        return cleaned
