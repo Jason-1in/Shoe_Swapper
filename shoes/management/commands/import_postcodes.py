@@ -4,7 +4,6 @@ a search by distance function later"""
 
 import csv
 
-import pandas as pd 
 from collections import defaultdict
 from pathlib import Path
 

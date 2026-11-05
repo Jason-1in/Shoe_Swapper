@@ -12,11 +12,12 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 import os 
 import dj_database_url
 from pathlib import Path
-
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv('/home/ubuntu/shoeswap.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
@@ -25,10 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY','dev-only-key-change-me')
 
 # Off unless you turn it on. Locally, run: DEBUG=True python manage.py runserver
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+DEBUG = os.environ.get('DEBUG', 'False').lower()  == 'True'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1'] + [
     h for h in os.environ.get('ALLOWED_HOSTS', '').split(',') if h

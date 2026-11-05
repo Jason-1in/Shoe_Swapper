@@ -1,7 +1,16 @@
-.venv/
+#Environment and keys
+*.env
+*.pem
+#Django
+staticfiles/
 db.sqlite3
+media/
+
+#Python
 __pycache__/
 *.pyc
+.venv/
+#System files
 .DS_Store
 ~$*.xlsx
 *.xlsx
