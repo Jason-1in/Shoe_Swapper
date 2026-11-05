@@ -47,7 +47,7 @@
                     <span>No photo uploaded</span>
                 </div>
             {% endif %}
-        </p>
+            </div>
         <p class="card-text mb-1">
             Size US {{ shoe.size_us }} ·
             {{ shoe.get_condition_display }} ·
@@ -55,6 +55,9 @@
         </p>
         <p class="card-text mb-1", style="color: rgb(0, 162, 255);">
             Suburb: {{shoe.suburb}} · 
+            {% if shoe.distance_label %}
+            <p class="card-text mb-1"><strong>{{ shoe.distance_label }}</strong></p>
+            {% endif %}
             Postcode: {{shoe.postcode}}
         </p>
         <p class="card-text mb-1">
@@ -69,6 +72,6 @@
     </div>
 </div>
 {% empty %}
-<p>No shoes are available right now. Try widening your filters or check back later, or <a href="{% url 'shoes:new_shoe' %}">add one of your own</a>.</p>
+<p>No shoes matching the criteria are available right now. Try widening your filters or check back later, or <a href="{% url 'shoes:new_shoe' %}">add one of your own</a>.</p>
 {% endfor %}
 {% endblock content %}

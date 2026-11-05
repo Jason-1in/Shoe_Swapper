@@ -14,12 +14,13 @@
             <a href="{% url 'shoes:shoe_detail' shoe.id %}"></a>
             {{ shoe.brand_name }} {{ shoe.model_name }}
         </h5>
-        <p class="card-text mb-1">
-            {% if shoe.photo %}
-                <img src="{{ shoe.photo.url }}"
-                alt="{{ shoe.brand_name }} {{ shoe.model_name }}"
-                width="200">
-            {% else %}
+
+        {% if shoe.photo %}
+            <img src="{{ shoe.photo.url }}"
+            alt="{{ shoe.brand_name }} {{ shoe.model_name }}"
+            width="200">
+        {% endif %}
+        <p class = "Card-text mb-1">
             Size US {{ shoe.size_us }} ·
             {{ shoe.get_condition_display }} ·
             {{ shoe.km_run }} km
@@ -29,7 +30,8 @@
                 Swap only
             {% endif %}
         </p>
-        <p class="card-text mb-1", style="color: rgb(0, 162, 255);"">
+        </p>
+        <p class="card-text mb-1", style="color: rgb(0, 162, 255);">
             Suburb: {{shoe.suburb}} · 
             Postcode: {{shoe.postcode}}
         </p>

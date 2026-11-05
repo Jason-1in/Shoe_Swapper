@@ -6,7 +6,7 @@
 {% endblock page_header %}
 
 {% block content %}
-<form method="post" enctype="mutlipart/form-data">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form form %}
     {% bootstrap_button button_type="submit" content="Save" %}

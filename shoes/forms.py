@@ -28,7 +28,7 @@ class ShoeForm(forms.ModelForm):
             'suburb': 'Suburb',
             'photo': 'Photo',
         }
-    widgets = {'notes':forms.Textarea(attrs={'rows':3}),
+        widgets = {'notes':forms.Textarea(attrs={'rows':3}),
                'photo': forms.ClearableFileInput(attrs={'accept': 'image/*'})}
 
 
@@ -44,7 +44,7 @@ class ShoeForm(forms.ModelForm):
             if photo.size > 5*1024*1024:
                 raise ValidationError("image must be smaller than 5 MB.")
             if photo.content_type not in [
-                'image/jped',
+                'image/jpeg',
                 'image/png',
                 'image/webp'
             ]:
