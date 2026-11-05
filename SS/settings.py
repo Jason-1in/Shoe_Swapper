@@ -22,13 +22,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$(v3m$$pe8=$ea=y_h#22bzd7c7cr5dp7&#9!0kk8)ds#i621)'
+SECRET_KEY = os.environ.get('SECRET_KEY','dev-only-key-change-me')
+
+# Off unless you turn it on. Locally, run: DEBUG=True python manage.py runserver
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1'] + [
+    h for h in os.environ.get('ALLOWED_HOSTS', '').split(',') if h
+]
+CSRF_TRUSTED_ORIGINS = [
+    o for o in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if o
+]
 
+
+USE_HTTPS = os.environ.get('USE_HTTPS', 'False') == 'True'
+SESSION_COOKIE_SECURE = USE_HTTPS
+CSRF_COOKIE_SECURE = USE_HTTPS
+SECURE_PROXY_SSL_HEADER = {'HTTP_X_FORWARDED_PROTO', 'https'}
 
 # Application definition
 
@@ -49,6 +62,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+
+    #Custom middleware
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -82,10 +98,10 @@ WSGI_APPLICATION = 'SS.wsgi.application'
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3',
+        conn_max_age=600,
+    )
 }
 
 
@@ -124,6 +140,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STORAGES = {
+    'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+    'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage'},
+}
+
+
+#for media
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 
 #Login and logout behaviour
 
@@ -139,11 +166,3 @@ MAILERS = {
     },
 }
 
-#for media
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
-
-USE_HTTPS = os.environ.get('USE_HTTPS', 'False') == 'True'
-SESSION_COOKIE_SECURE = USE_HTTPS
-CSRF_COOKIE_SECURE = USE_HTTPS
