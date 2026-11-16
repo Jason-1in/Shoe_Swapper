@@ -38,7 +38,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 
-USE_HTTPS = os.environ.get('USE_HTTPS', 'False') == 'true'
+USE_HTTPS = os.environ.get('USE_HTTPS', 'False').lower() == 'true'
 SESSION_COOKIE_SECURE = USE_HTTPS
 CSRF_COOKIE_SECURE = USE_HTTPS
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
