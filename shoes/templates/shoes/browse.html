@@ -49,7 +49,7 @@
             {% endif %}
             </div>
         <p class="card-text mb-1">
-            Size US {{ shoe.size_us }} ·
+            Size US {{ shoe.size_us }} · Condition: 
             {{ shoe.get_condition_display }} ·
             Mileage: {{ shoe.km_run }} km
         </p>
@@ -62,7 +62,7 @@
         </p>
         <p class="card-text mb-1">
             {% if shoe.asking_price is not None %}
-                Asking Price${{ shoe.asking_price|floatformat:2 }}
+                Asking Price ${{ shoe.asking_price|floatformat:2 }}
             {% else %}
                 Swap only
             {% endif %}
