@@ -26,7 +26,7 @@ load_dotenv('/home/ubuntu/shoeswap.env')
 SECRET_KEY = os.environ.get('SECRET_KEY','dev-only-key-change-me')
 
 # Off unless you turn it on. Locally, run: DEBUG=True python manage.py runserver
-DEBUG = os.environ.get('DEBUG', 'False').lower()  == 'True'
+DEBUG = os.environ.get('DEBUG', 'False').lower()  == 'true'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
@@ -38,10 +38,10 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 
-USE_HTTPS = os.environ.get('USE_HTTPS', 'False') == 'True'
+USE_HTTPS = os.environ.get('USE_HTTPS', 'False') == 'true'
 SESSION_COOKIE_SECURE = USE_HTTPS
 CSRF_COOKIE_SECURE = USE_HTTPS
-SECURE_PROXY_SSL_HEADER = {'HTTP_X_FORWARDED_PROTO', 'https'}
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
 
